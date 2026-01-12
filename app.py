@@ -5,16 +5,17 @@ import redis
 
 app = FastAPI()
 
-# פרטי Redis
+# פרטי Redis (OpenShift)
 REDIS_HOST = os.getenv("REDIS_SERVICE_HOST", "redis")
 REDIS_PORT = int(os.getenv("REDIS_SERVICE_PORT", "6379"))
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")  # חובה
 
 r = redis.Redis(
     host=REDIS_HOST,
     port=REDIS_PORT,
+    password=REDIS_PASSWORD,
     decode_responses=True
 )
-
 
 class Item(BaseModel):
     key: str
@@ -36,8 +37,6 @@ def get_cache(key: str):
         return {"error": "not found"}
     return {"key": key, "value": value}
 
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8080)
-
