@@ -37,3 +37,8 @@ def get_cache(key: str):
     if value is None:
         return {"error": "not found"}
     return {"key": key, "value": value}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
